@@ -1,23 +1,14 @@
-name: End-to-end tests
+name: example-yarn-modern
 on: push
 jobs:
-  cypress-run:
+  yarn-classic:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.15.0
-          cache: 'yarn'
-          cache-dependency-path: vite-project/yarn.lock
-        
-      - name: Install Dependencies
-        run: yarn
-        
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
+          working-directory: vite-project
+          install-command: yarn install
           component: true
