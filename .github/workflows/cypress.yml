@@ -3,7 +3,6 @@ on: push
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
-    # let's make sure our "app" works on several versions of Node
     strategy:
       matrix:
         node: [19]
@@ -15,9 +14,16 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Checkout
         uses: actions/checkout@v3
-      # run Cypress tests and record them under the same run
-      # associated with commit SHA and just give a different group name
+      - name: Check if component test files exist
+        id: check-component-files
+        run: |
+          if [[ $(find vite-project/cypress/component-tests -name '*.cy.{js,jsx,ts,tsx}' | wc -l) -gt 0 ]]; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
       - name: Cypress Component run
+        if: steps.check-component-files.outputs.exists == 'true'
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
@@ -27,9 +33,17 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check if e2e test files exist
+        id: check-e2e-files
+        run: |
+          if [[ $(find vite-project/cypress/e2e-tests -name '*.cy.{js,jsx,ts,tsx}' | wc -l) -gt 0 ]]; then
+            echo "::set-output name=exists::true"
+          else
+            echo "::set-output name=exists::false"
+          fi
       - name: Cypress E2E run
+        if: steps.check-e2e-files.outputs.exists == 'true'
         uses: cypress-io/github-action@v5
-        continue-on-error: true
         with:
           browser: chrome
           working-directory: vite-project
