@@ -1,4 +1,4 @@
-name: example-yarn-modern
+name: cypress-test
 on: push
 jobs:
   cypress-run:
@@ -17,12 +17,22 @@ jobs:
         uses: actions/checkout@v3
       # run Cypress tests and record them under the same run
       # associated with commit SHA and just give a different group name
-      - name: Cypress run
+      - name: Cypress Component run
         uses: cypress-io/github-action@v5
         with:
+          browser: chrome
           working-directory: vite-project
           cache-key: node-v${{ matrix.node }}-on-${{ runner.os }}-hash-${{ hashFiles('yarn.lock') }}
           component: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cypress E2E run
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          working-directory: vite-project
+          cache-key: node-v${{ matrix.node }}-on-${{ runner.os }}-hash-${{ hashFiles('yarn.lock') }}
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
