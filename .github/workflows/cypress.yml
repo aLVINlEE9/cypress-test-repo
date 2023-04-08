@@ -11,4 +11,3 @@ jobs:
         with:
           working-directory: vite-project
           install-command: yarn install
-          component: true
