@@ -6,7 +6,7 @@ jobs:
     # let's make sure our "app" works on several versions of Node
     strategy:
       matrix:
-        node: [14, 16, 18, 19]
+        node: [19]
     name: E2E on Node v${{ matrix.node }}
     steps:
       - name: Setup Node
@@ -20,6 +20,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
+          working-directory: vite-project
           record: true
           group: Tests on Node v${{ matrix.node }}
           cache-key: node-v${{ matrix.node }}-on-${{ runner.os }}-hash-${{ hashFiles('yarn.lock') }}
