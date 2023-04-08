@@ -3,6 +3,7 @@ import { defineConfig } from "cypress";
 export default defineConfig({
   e2e: {
     specPattern: "cypress/e2e-tests/**/*.cy.{js,jsx,ts,tsx}",
+    supportFile: false,
   },
   component: {
     specPattern: "cypress/component-tests/**/*.cy.{js,jsx,ts,tsx}",
