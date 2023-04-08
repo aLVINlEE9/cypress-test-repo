@@ -18,12 +18,12 @@ jobs:
         id: check-component-files
         run: |
           if [[ $(find vite-project/cypress/component-tests -name '*.cy.{js,jsx,ts,tsx}' | wc -l) -gt 0 ]]; then
-            echo "::set-output name=exists::true"
+            echo "component_file_exists=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=exists::false"
+            echo "component_file_exists=false" >> $GITHUB_ENV
           fi
       - name: Cypress Component run
-        if: steps.check-component-files.outputs.exists == 'true'
+        if: env.component_file_exists == 'true'
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
@@ -37,12 +37,12 @@ jobs:
         id: check-e2e-files
         run: |
           if [[ $(find vite-project/cypress/e2e-tests -name '*.cy.{js,jsx,ts,tsx}' | wc -l) -gt 0 ]]; then
-            echo "::set-output name=exists::true"
+            echo "e2e_file_exists=true" >> $GITHUB_ENV
           else
-            echo "::set-output name=exists::false"
+            echo "e2e_file_exists=false" >> $GITHUB_ENV
           fi
       - name: Cypress E2E run
-        if: steps.check-e2e-files.outputs.exists == 'true'
+        if: env.e2e_file_exists == 'true'
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
