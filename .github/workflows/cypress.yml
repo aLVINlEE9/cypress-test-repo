@@ -17,7 +17,7 @@ jobs:
       - name: Check if component test files exist
         id: check-component-files
         run: |
-          if [[ $(find vite-project/cypress/component-tests -name '*.cy.{js,jsx,ts,tsx}' | wc -l) -gt 0 ]]; then
+          if [[ $(find vite-project/cypress/component-tests \( -name '*.cy.js' -o -name '*.cy.jsx' -o -name '*.cy.ts' -o -name '*.cy.tsx' \) | wc -l) -gt 0 ]]; then
             echo "component_file_exists=true" >> $GITHUB_ENV
           else
             echo "component_file_exists=false" >> $GITHUB_ENV
@@ -36,7 +36,7 @@ jobs:
       - name: Check if e2e test files exist
         id: check-e2e-files
         run: |
-          if [[ $(find vite-project/cypress/e2e-tests -name '*.cy.{js,jsx,ts,tsx}' | wc -l) -gt 0 ]]; then
+          if [[ $(find vite-project/cypress/e2e-tests \( -name '*.cy.js' -o -name '*.cy.jsx' -o -name '*.cy.ts' -o -name '*.cy.tsx' \) | wc -l) -gt 0 ]]; then
             echo "e2e_file_exists=true" >> $GITHUB_ENV
           else
             echo "e2e_file_exists=false" >> $GITHUB_ENV
